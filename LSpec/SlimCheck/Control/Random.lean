@@ -84,7 +84,7 @@ def randBound (α : Type u) [Random α] (lo hi : α) [RandomGen g] : RandT g α 
   Random.randomR lo hi
 
 def randFin {n : Nat} [RandomGen g] : RandT g (Fin n.succ) :=
-  λ ⟨g⟩ => randNat g 0 n.succ |>.map Fin.ofNat ULift.up
+  λ ⟨g⟩ => randNat g 0 n.succ |>.map (Fin.ofNat _) ULift.up
 
 instance : Random Bool where
   randomR := fun lo hi g => 
@@ -102,7 +102,7 @@ instance : Random Nat where
 instance {n : Nat} : Random (Fin n.succ) where
   randomR := fun lo hi g => 
     let (n, g') := randNat g.down lo hi  
-    (.ofNat n, .up g')
+    (Fin.ofNat _ n, .up g')
 
 instance : Random Int where
   randomR := fun lo hi g => 
