@@ -10,9 +10,9 @@ def runCmd (cmd : String) (args : Array String) (testing : Bool) :
 def getTestPathsFromLake : IO $ List FilePath := do
   let source ← IO.FS.readFile ⟨"lakefile.lean"⟩
   let lines := source.splitOn "\n" |>.filter fun line =>
-    !(line.trimLeft |>.startsWith "--")
-  return ("\n".intercalate lines).splitOn "lean_exe"
-    |>.map (·.trimLeft)
+    !(line.trimAsciiStart.toString |>.startsWith "--")
+  return (("\n".intercalate lines).splitOn "lean_exe")
+    |>.map (·.trimAsciiStart.toString)
     |>.filter (·.startsWith "Tests.")
     |>.map fun str =>
       let str := str.append "\n" |>.replace "\n" " " |>.replace "\t" " "
