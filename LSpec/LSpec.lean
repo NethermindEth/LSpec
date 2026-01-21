@@ -137,7 +137,7 @@ section PureTesting
 
 /-- A generic runner for `TestSeq` -/
 def TestSeq.run (tSeq : TestSeq) (indent := 0) : Bool × String :=
-  let pad := String.mk $ List.replicate indent ' '
+  let pad := String.ofList $ List.replicate indent ' '
   let rec aux (acc : String) : TestSeq → Bool × String
     | .done => (true, acc)
     | .group d ts n =>
@@ -187,7 +187,7 @@ class TestMonadEmit (m) [Monad m] where
 /-- A monadic runner that emits test outputs as they're produced. -/
 def TestSeq.runM (tSeq : TestSeq) (indent := 0) [Monad m] [h : TestMonadEmit m] :
     m Bool :=
-  let pad := String.mk $ List.replicate indent ' '
+  let pad := String.ofList $ List.replicate indent ' '
   match tSeq with
   | .done => return true
   | .group d ts n => do
